@@ -1,0 +1,29 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@LilAsserter_HostAddress = http://localhost:5094
+
+GET {{LilAsserter_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
