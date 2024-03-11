@@ -9,7 +9,7 @@ public class ErrorFilter : IActionFilter
     private readonly IAsserter _asserterService;
     public ErrorFilter(IAsserter asserterService)
     {
-        _asserterService = asserterService 
+        _asserterService = asserterService
             ?? throw new ArgumentNullException(nameof(asserterService));
     }
     public void OnActionExecuting(ActionExecutingContext context)

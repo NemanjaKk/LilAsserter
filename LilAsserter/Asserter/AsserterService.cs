@@ -2,8 +2,8 @@
 
 namespace LilAsserter.Asserter
 {
-	public class AsserterService : IAsserter
-	{
+    public class AsserterService : IAsserter
+    {
         private readonly List<ErrorModel> Errors = [];
         private readonly IHttpContextAccessor _httpContextAccessor;
         private Stream _ogStream;
@@ -26,7 +26,7 @@ namespace LilAsserter.Asserter
         }
 
         public AsserterService AssertBreak(bool condition)
-		{
+        {
             Assert(condition);
             if (Errors.Count > 0)
             {
@@ -37,23 +37,23 @@ namespace LilAsserter.Asserter
             {
                 return this;
             }
-		}        
-        
-        public AsserterService Assert(bool condition)
-		{
-			if (!condition)
-			{
-				Errors.Add(new ()
-				{
-					Message = "Error placeholder " + Errors.Count,
-					StackTrace = "Stack trace placeholder " + Errors.Count
-				});
-			}
-			return this;
-		}
+        }
 
-		public async void EndRequest(string? body = null)
-		{
+        public AsserterService Assert(bool condition)
+        {
+            if (!condition)
+            {
+                Errors.Add(new()
+                {
+                    Message = "Error placeholder " + Errors.Count,
+                    StackTrace = "Stack trace placeholder " + Errors.Count
+                });
+            }
+            return this;
+        }
+
+        public async void EndRequest(string? body = null)
+        {
             body ??= GenerateErrorMessage(Errors);
 
             _freshStream.Position = 0;
@@ -79,5 +79,5 @@ namespace LilAsserter.Asserter
             return errorMessageBuilder.ToString();
         }
         public List<ErrorModel> GetErrorModels() => Errors;
-	}
+    }
 }
