@@ -17,11 +17,11 @@ namespace LilAsserter.Controllers
         [HttpGet(Name = "GetStuff")]
         public IActionResult Get()
         {
-
             _asserterService
-                .Assert(1 == 1)
-                .Assert(2 == 3)
-                .Assert(3 == 3);
+                .Assert(true)
+                .Assert(true)
+                .AssertBreak(false)
+                .Assert(true);
 
             return Ok("Stuff");
         }
