@@ -18,10 +18,10 @@ namespace LilAsserter.Controllers
         public IActionResult Get()
         {
             _asserterService
-                .Assert(true)
-                .Assert(true)
+                .Assert(false)
+                .Assert(false)
                 .AssertBreak(false)
-                .Assert(true);
+                .Assert(false);
 
             return Ok("Stuff");
         }
