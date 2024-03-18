@@ -14,7 +14,6 @@ public class AsserterService
         _logger = options.EnableLogging
             ? logger ?? throw new ArgumentNullException(nameof(logger))
             : null;
-
     }
 
     public AsserterService AssertBreak(bool condition, string? message = null)
