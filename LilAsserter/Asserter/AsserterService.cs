@@ -12,7 +12,8 @@ public class AsserterService
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _logger = options.EnableLogging
-            ? serviceProvider.GetService<ILogger<AsserterService>>() ?? throw new ArgumentNullException("ILogger")
+            ? serviceProvider.GetService<ILogger<AsserterService>>()
+                ?? throw new InvalidOperationException("ILogger service not available in the service provider")
             : null;
     }
 
