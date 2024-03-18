@@ -6,13 +6,13 @@ public class AsserterService
     private readonly List<ErrorModel> Errors = [];
     private readonly ILogger<AsserterService>? _logger;
 
-    public AsserterService(AsserterOptions options, ILogger<AsserterService> logger)
+    public AsserterService(AsserterOptions options, IServiceProvider serviceProvider)
     {
         ArgumentNullException.ThrowIfNull(options);
-        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _logger = options.EnableLogging
-            ? logger ?? throw new ArgumentNullException(nameof(logger))
+            ? serviceProvider.GetService<ILogger<AsserterService>>() ?? throw new ArgumentNullException("ILogger")
             : null;
     }
 

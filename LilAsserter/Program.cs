@@ -3,14 +3,13 @@ using LilAsserter.Asserter;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<AsserterService>(sp =>
+builder.Services.AddScoped<AsserterService>(serviceProvider =>
 {
     var options = new AsserterOptions
     {
         EnableLogging = true
     };
-    var logger = sp.GetRequiredService<ILogger<AsserterService>>();
-    return new(options, logger);
+    return new(options, serviceProvider);
 });
 builder.Services.AddScoped<AsserterExceptionFilter>();
 builder.Services.AddControllers(options =>
