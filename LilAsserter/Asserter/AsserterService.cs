@@ -17,14 +17,14 @@ namespace LilAsserter.Asserter
             }
         }
 
-        public AsserterService AssertBreak(bool condition)
+        public AsserterService AssertBreak(bool condition, string? message = null)
         {
             if (!condition)
             {
                 _logger?.LogError("Error placeholder " + Errors.Count);
                 Errors.Add(new()
                 {
-                    Message = "Error placeholder " + Errors.Count,
+                    Message = message ?? "Error placeholder " + Errors.Count,
                     StackTrace = "Stack trace placeholder " + Errors.Count
                 });
                 throw new AssertException(GenerateErrorMessage());
@@ -35,14 +35,14 @@ namespace LilAsserter.Asserter
             }
         }
 
-        public AsserterService Assert(bool condition)
+        public AsserterService Assert(bool condition, string? message = null)
         {
             if (!condition)
             {
                 _logger?.LogWarning("Error placeholder " + Errors.Count);
                 Errors.Add(new()
                 {
-                    Message = "Error placeholder " + Errors.Count,
+                    Message = message ?? "Error placeholder " + Errors.Count,
                     StackTrace = "Stack trace placeholder " + Errors.Count
                 });
             }

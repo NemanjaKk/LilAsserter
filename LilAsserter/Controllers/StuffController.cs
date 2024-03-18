@@ -18,7 +18,7 @@ public class StuffController : ControllerBase
     {
         _asserterService
             .Assert(false)
-            .Assert(false)
+            .Assert(false, "Overridden message")
             .AssertBreak(false)
             .Assert(false);
 
