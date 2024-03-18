@@ -1,5 +1,4 @@
-﻿using LilAsserter.Exceptions;
-using System.Text;
+﻿using System.Text;
 
 namespace LilAsserter.Asserter
 {

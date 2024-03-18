@@ -1,19 +1,17 @@
-﻿namespace LilAsserter.Asserter
+﻿namespace LilAsserter.Asserter;
+public class AssertException : Exception
 {
-    public class AssertException : Exception
+    public AssertException()
     {
-        public AssertException()
-        {
-        }
+    }
 
-        public AssertException(string message)
-            : base(message)
-        {
-        }
+    public AssertException(string message)
+        : base(message)
+    {
+    }
 
-        public AssertException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+    public AssertException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }
