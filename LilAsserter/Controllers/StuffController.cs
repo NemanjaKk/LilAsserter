@@ -6,9 +6,9 @@ namespace LilAsserter.Controllers;
 [Route("[controller]")]
 public class StuffController : ControllerBase
 {
-    private readonly IAsserter _asserterService;
+    private readonly AsserterService _asserterService;
 
-    public StuffController(IAsserter asserterService)
+    public StuffController(AsserterService asserterService)
     {
         _asserterService = asserterService;
     }

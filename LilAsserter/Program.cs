@@ -1,19 +1,18 @@
 using LilAsserter;
 using LilAsserter.Asserter;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<AsserterOptions>(options =>
+builder.Services.AddScoped<AsserterService>(sp =>
 {
-    options.EnableLogging = true;
-});
-builder.Services.AddScoped<IAsserter>(sp =>
-{
-    var options = sp.GetRequiredService<IOptions<AsserterOptions>>().Value;
+    var options = new AsserterOptions
+    {
+        EnableLogging = true
+    };
     var logger = sp.GetRequiredService<ILogger<AsserterService>>();
-    return new AsserterService(options, logger);
-}); builder.Services.AddScoped<AsserterExceptionFilter>();
+    return new(options, logger);
+});
+builder.Services.AddScoped<AsserterExceptionFilter>();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<AsserterExceptionFilter>();

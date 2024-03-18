@@ -2,7 +2,7 @@
 
 namespace LilAsserter.Asserter
 {
-    public class AsserterService : IAsserter
+    public class AsserterService
     {
         private readonly List<ErrorModel> Errors = [];
         private readonly AsserterOptions _options;
@@ -17,7 +17,7 @@ namespace LilAsserter.Asserter
             }
         }
 
-        public IAsserter AssertBreak(bool condition)
+        public AsserterService AssertBreak(bool condition)
         {
             if (!condition)
             {
@@ -35,7 +35,7 @@ namespace LilAsserter.Asserter
             }
         }
 
-        public IAsserter Assert(bool condition)
+        public AsserterService Assert(bool condition)
         {
             if (!condition)
             {
