@@ -1,4 +1,6 @@
-﻿namespace LilAsserter.AsserterFiles;
+﻿using System.Diagnostics;
+
+namespace LilAsserter.AsserterFiles;
 public static class Asserter
 {
     private static AsserterService _asserterService;
@@ -7,13 +9,21 @@ public static class Asserter
         _asserterService = asserterService;
     }
 
-    public static void Assert(bool condition, string? message = null)
+    public static void Assert(
+        bool condition,
+        string? message = null,
+        [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
+        [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
     {
-        _asserterService.Assert(condition, message);
+        _asserterService.Assert(condition, callerFilePath + " line " + callerLineNumber, message);
     }
 
-    public static void AssertBreak(bool condition, string? message = null)
+    public static void AssertBreak(
+        bool condition,
+        string? message = null,
+        [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
+        [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
     {
-        _asserterService.AssertBreak(condition, message);
+        _asserterService.AssertBreak(condition, callerFilePath + " line " + callerLineNumber, message);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LilAsserter.AsserterFiles;
 public class AsserterService
@@ -17,15 +18,16 @@ public class AsserterService
             : null;
     }
 
-    public AsserterService AssertBreak(bool condition, string? message = null)
+    public AsserterService AssertBreak(bool condition, string errorLocation, string? message = null)
     {
         if (!condition)
         {
-            _logger?.LogError("Error placeholder " + Errors.Count);
+            message ??= "Error placeholder " + Errors.Count;
+            _logger?.LogError(message + Environment.NewLine + errorLocation);
             Errors.Add(new()
             {
-                Message = message ?? "Error placeholder " + Errors.Count,
-                StackTrace = "Stack trace placeholder " + Errors.Count
+                Message = message,
+                Location = errorLocation ?? "Stack trace placeholder " + Errors.Count
             });
             throw new AssertException(GenerateErrorMessage());
         }
@@ -35,15 +37,16 @@ public class AsserterService
         }
     }
 
-    public AsserterService Assert(bool condition, string? message = null)
+    public AsserterService Assert(bool condition, string errorLocation, string? message = null)
     {
         if (!condition)
         {
-            _logger?.LogWarning("Error placeholder " + Errors.Count);
+            message ??= "Error placeholder " + Errors.Count;
+            _logger?.LogWarning(message + Environment.NewLine + errorLocation);
             Errors.Add(new()
             {
-                Message = message ?? "Error placeholder " + Errors.Count,
-                StackTrace = "Stack trace placeholder " + Errors.Count
+                Message = message,
+                Location = errorLocation ?? "Stack trace placeholder " + Errors.Count
             });
         }
         return this;
@@ -59,7 +62,7 @@ public class AsserterService
         foreach (var error in Errors)
         {
             errorMessageBuilder.AppendLine($"Message: {error.Message}");
-            errorMessageBuilder.AppendLine($"StackTrace: {error.StackTrace}");
+            errorMessageBuilder.AppendLine($"Location: {error.Location}");
             errorMessageBuilder.AppendLine();
         }
 
