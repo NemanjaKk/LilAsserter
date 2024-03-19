@@ -3,6 +3,8 @@ public static class AsserterExtensions
 {
     public static IServiceCollection AddAsserter(this IServiceCollection services, AsserterOptions? options = null)
     {
+        ArgumentNullException.ThrowIfNull(services);
+
         options ??= new();
 
         services.AddScoped<AsserterService>(serviceProvider =>

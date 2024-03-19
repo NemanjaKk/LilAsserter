@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-
-namespace LilAsserter.AsserterFiles;
+﻿namespace LilAsserter.AsserterFiles;
 public static class Asserter
 {
     private static AsserterService _asserterService;
     public static void Initialize(AsserterService asserterService)
     {
+        ArgumentNullException.ThrowIfNull(asserterService);
+
         _asserterService = asserterService;
     }
 
