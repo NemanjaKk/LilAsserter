@@ -1,4 +1,4 @@
-using LilAsserter.Asserter;
+using LilAsserter.AsserterFiles;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LilAsserter.Controllers;
@@ -6,21 +6,13 @@ namespace LilAsserter.Controllers;
 [Route("[controller]")]
 public class StuffController : ControllerBase
 {
-    private readonly AsserterService _asserterService;
-
-    public StuffController(AsserterService asserterService)
-    {
-        _asserterService = asserterService;
-    }
-
     [HttpGet(Name = "GetStuff")]
     public IActionResult Get()
     {
-        _asserterService
-            .Assert(false)
-            .Assert(false, "Overridden message")
-            .AssertBreak(false)
-            .Assert(false);
+        Asserter.Assert(false);
+        Asserter.Assert(false, "Overridden message");
+        Asserter.AssertBreak(false);
+        Asserter.Assert(false);
 
         return Ok("Stuff");
     }

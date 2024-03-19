@@ -1,17 +1,13 @@
 using LilAsserter;
-using LilAsserter.Asserter;
+using LilAsserter.AsserterFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<AsserterService>(serviceProvider =>
+builder.Services.AddAsserter(new AsserterOptions
 {
-    var options = new AsserterOptions
-    {
-        EnableLogging = true
-    };
-    return new(options, serviceProvider);
+    EnableLogging = true
 });
-builder.Services.AddScoped<AsserterExceptionFilter>();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<AsserterExceptionFilter>();
@@ -20,6 +16,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

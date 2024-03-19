@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace LilAsserter.Asserter;
+namespace LilAsserter.AsserterFiles;
 public class AsserterService
 {
     private readonly List<ErrorModel> Errors = [];

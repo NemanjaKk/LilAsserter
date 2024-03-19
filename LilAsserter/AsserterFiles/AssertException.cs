@@ -1,4 +1,4 @@
-﻿namespace LilAsserter.Asserter;
+﻿namespace LilAsserter.AsserterFiles;
 public class AssertException : Exception
 {
     public AssertException()

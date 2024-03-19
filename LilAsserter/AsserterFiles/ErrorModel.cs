@@ -1,4 +1,4 @@
-﻿namespace LilAsserter.Asserter;
+﻿namespace LilAsserter.AsserterFiles;
 public class ErrorModel
 {
     public string Message { get; set; }
