@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Text;
 
 namespace LilAsserter.AsserterFiles;
 public class AsserterService
@@ -8,6 +7,8 @@ public class AsserterService
     private readonly List<ErrorModel> Errors = [];
     private readonly ILogger<AsserterService>? _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
+
+    private readonly bool IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
     public AsserterService(AsserterOptions options, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
     {
@@ -18,39 +19,38 @@ public class AsserterService
         _httpContextAccessor = httpContextAccessor;
         _logger = options.EnableLogging
             ? serviceProvider.GetService<ILogger<AsserterService>>()
-                ?? throw new InvalidOperationException("ILogger service not available in the service provider")
+                ?? throw new InvalidOperationException(nameof(ILogger<AsserterService>) + " not available in the service provider")
             : null;
     }
 
-    public AsserterService AssertBreak(bool condition, string errorLocation, string? message = null)
+    public AsserterService AssertBreak(bool condition, string errorLocation, string? message = null, string? loggingDetails = null)
     {
         if (!condition)
         {
-            message ??= "Error placeholder " + Errors.Count;
-            _logger?.LogError(message + Environment.NewLine + errorLocation);
+            LogError(errorLocation, message, loggingDetails);
+
             Errors.Add(new()
             {
-                Message = message,
-                Location = errorLocation ?? "Stack trace placeholder " + Errors.Count
+                Message = message ?? "An error occured",
+                Trace = errorLocation,
+                Details = loggingDetails
             });
             throw new AssertException(GenerateProblemDetails());
         }
-        else
-        {
-            return this;
-        }
+        return this;
     }
 
-    public AsserterService Assert(bool condition, string errorLocation, string? message = null)
+    public AsserterService Assert(bool condition, string errorLocation, string? message = null, string? loggingDetails = null)
     {
         if (!condition)
         {
-            message ??= "Error placeholder " + Errors.Count;
-            _logger?.LogWarning(message + Environment.NewLine + errorLocation);
+            LogWarning(errorLocation, message, loggingDetails);
+
             Errors.Add(new()
             {
-                Message = message,
-                Location = errorLocation ?? "Stack trace placeholder " + Errors.Count
+                Message = message ?? "An error occured",
+                Trace = errorLocation,
+                Details = loggingDetails
             });
         }
         return this;
@@ -58,27 +58,12 @@ public class AsserterService
 
     public List<ErrorModel> GetErrorModels() => Errors;
 
-    public string GenerateErrorMessage()
-    {
-        StringBuilder errorMessageBuilder = new();
-        errorMessageBuilder.AppendLine("Errors occurred:");
-
-        foreach (var error in Errors)
-        {
-            errorMessageBuilder.AppendLine($"Message: {error.Message}");
-            errorMessageBuilder.AppendLine($"Location: {error.Location}");
-            errorMessageBuilder.AppendLine();
-        }
-
-        return errorMessageBuilder.ToString();
-    }
-
-    public ProblemDetails GenerateProblemDetails()
+    private ProblemDetails GenerateProblemDetails()
     {
         var problemDetails = new ProblemDetails
         {
             Title = "Errors occurred",
-            Detail = "Errors occurred while processing the request.",
+            Detail = "Errors occurred while processing the request",
             Status = (int)HttpStatusCode.BadRequest
         };
 
@@ -89,18 +74,45 @@ public class AsserterService
             problemDetails.Instance = request.Scheme + "://" + request.Host + request.Path + request.QueryString;
         }
 
-        var errorList = new List<object>();
+        List<ErrorModel> formattedErrors = [];
         foreach (var error in Errors)
         {
-            var errorDetail = new
+            var formattedError = new ErrorModel
             {
                 Message = error.Message,
-                Trace = error.Location
+                Details = IsDevelopment ? error.Details : null,
+                Trace = IsDevelopment ? error.Trace : null
             };
-            errorList.Add(errorDetail);
+            formattedErrors.Add(formattedError);
         }
-        problemDetails.Extensions["errors"] = errorList;
+        problemDetails.Extensions["errors"] = formattedErrors;
 
         return problemDetails;
+    }
+
+    private void LogWarning(string errorLocation, string? message, string? loggingDetails)
+    {
+        Log(LogLevel.Warning, errorLocation, message, loggingDetails);
+    }
+    private void LogError(string errorLocation, string? message, string? loggingDetails)
+    {
+        Log(LogLevel.Error, errorLocation, message, loggingDetails);
+    }
+    private void Log(LogLevel logLevel, string errorLocation, string? message, string? loggingDetails)
+    {
+        string logMessage = "";
+        if (!string.IsNullOrEmpty(message))
+        {
+            logMessage += message + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(loggingDetails))
+        {
+            logMessage += loggingDetails + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(errorLocation))
+        {
+            logMessage += errorLocation + Environment.NewLine;
+        }
+        _logger?.Log(logLevel, logMessage);
     }
 }

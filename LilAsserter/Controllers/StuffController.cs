@@ -9,10 +9,10 @@ public class StuffController : ControllerBase
     [HttpGet(Name = "GetStuff")]
     public IActionResult Get()
     {
-        Asserter.Assert(false);
-        Asserter.Assert(false, "Overridden message");
+        Asserter.Assert(false, "This statement is false");
+        Asserter.Assert(false, "Statement is false", "Very usefull logging message that contains information of the highest order and stuff");
         Asserter.AssertBreak(false);
-        Asserter.Assert(false);
+        Asserter.Assert(false, "You won't see me");
 
         return Ok("Stuff");
     }

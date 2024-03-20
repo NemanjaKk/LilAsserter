@@ -1,7 +1,11 @@
-﻿namespace LilAsserter.AsserterFiles;
+﻿using System.Text.Json.Serialization;
+
+namespace LilAsserter.AsserterFiles;
 public class ErrorModel
 {
     public string Message { get; set; }
-    public string StatusCode { get; set; } = "400";
-    public string Location { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Details { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Trace { get; set; }
 }

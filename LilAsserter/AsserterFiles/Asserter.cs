@@ -1,5 +1,7 @@
-﻿namespace LilAsserter.AsserterFiles;
-public static class Asserter
+﻿using System.Diagnostics;
+
+namespace LilAsserter.AsserterFiles;
+public static partial class Asserter
 {
     private static AsserterService _asserterService;
     public static void Initialize(AsserterService asserterService)
@@ -12,18 +14,20 @@ public static class Asserter
     public static void Assert(
         bool condition,
         string? message = null,
-        [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
-        [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
+        string? loggingDetails = null)
     {
-        _asserterService.Assert(condition, callerFilePath + ":line " + callerLineNumber, message);
+        string fullStackTrace = new StackTrace(1, true).ToString();
+
+        _asserterService.Assert(condition, fullStackTrace, message, loggingDetails);
     }
 
     public static void AssertBreak(
         bool condition,
         string? message = null,
-        [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
-        [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
+        string? loggingDetails = null)
     {
-        _asserterService.AssertBreak(condition, callerFilePath + " line " + callerLineNumber, message);
+        string fullStackTrace = new StackTrace(1, true).ToString();
+
+        _asserterService.AssertBreak(condition, fullStackTrace, message, loggingDetails);
     }
 }
