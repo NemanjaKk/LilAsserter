@@ -1,29 +1,19 @@
-using LilAsserter.Asserter;
+using LilAsserter.AsserterFiles;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LilAsserter.Controllers
+namespace LilAsserter.Controllers;
+[ApiController]
+[Route("[controller]")]
+public class StuffController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class StuffController : ControllerBase
+    [HttpGet(Name = "GetStuff")]
+    public IActionResult Get()
     {
-        private readonly IAsserter _asserterService;
+        Asserter.Assert(false, "This statement is false");
+        Asserter.Assert(false, "Statement is false", "Very usefull logging message that contains information of the highest order and stuff");
+        Asserter.AssertBreak(false);
+        Asserter.Assert(false, "You won't see me");
 
-        public StuffController(IAsserter asserterService)
-        {
-            _asserterService = asserterService;
-        }
-
-        [HttpGet(Name = "GetStuff")]
-        public IActionResult Get()
-        {
-            _asserterService
-                .Assert(true)
-                .Assert(true)
-                .AssertBreak(false)
-                .Assert(true);
-
-            return Ok("Stuff");
-        }
+        return Ok("Stuff");
     }
 }
