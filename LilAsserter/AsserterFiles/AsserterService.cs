@@ -1,16 +1,21 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Text;
 
 namespace LilAsserter.AsserterFiles;
 public class AsserterService
 {
     private readonly List<ErrorModel> Errors = [];
     private readonly ILogger<AsserterService>? _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AsserterService(AsserterOptions options, IServiceProvider serviceProvider)
+    public AsserterService(AsserterOptions options, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(serviceProvider);
+        ArgumentNullException.ThrowIfNull(httpContextAccessor);
 
+        _httpContextAccessor = httpContextAccessor;
         _logger = options.EnableLogging
             ? serviceProvider.GetService<ILogger<AsserterService>>()
                 ?? throw new InvalidOperationException("ILogger service not available in the service provider")
@@ -28,7 +33,7 @@ public class AsserterService
                 Message = message,
                 Location = errorLocation ?? "Stack trace placeholder " + Errors.Count
             });
-            throw new AssertException(GenerateErrorMessage());
+            throw new AssertException(GenerateProblemDetails());
         }
         else
         {
@@ -66,5 +71,36 @@ public class AsserterService
         }
 
         return errorMessageBuilder.ToString();
+    }
+
+    public ProblemDetails GenerateProblemDetails()
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Errors occurred",
+            Detail = "Errors occurred while processing the request.",
+            Status = (int)HttpStatusCode.BadRequest
+        };
+
+        var request = _httpContextAccessor.HttpContext?.Request;
+        if (request is not null)
+        {
+            problemDetails.Type = request.Scheme + "://" + request.Host;
+            problemDetails.Instance = request.Scheme + "://" + request.Host + request.Path + request.QueryString;
+        }
+
+        var errorList = new List<object>();
+        foreach (var error in Errors)
+        {
+            var errorDetail = new
+            {
+                Message = error.Message,
+                Trace = error.Location
+            };
+            errorList.Add(errorDetail);
+        }
+        problemDetails.Extensions["errors"] = errorList;
+
+        return problemDetails;
     }
 }

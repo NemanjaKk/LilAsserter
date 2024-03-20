@@ -15,7 +15,7 @@ public static class Asserter
         [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
         [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
     {
-        _asserterService.Assert(condition, callerFilePath + " line " + callerLineNumber, message);
+        _asserterService.Assert(condition, callerFilePath + ":line " + callerLineNumber, message);
     }
 
     public static void AssertBreak(

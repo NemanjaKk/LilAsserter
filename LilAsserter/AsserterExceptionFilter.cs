@@ -7,9 +7,9 @@ public class AsserterExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        if (context.Exception is AssertException)
+        if (context.Exception is AssertException assertException)
         {
-            context.Result = new BadRequestObjectResult(context.Exception.Message);
+            context.Result = new BadRequestObjectResult(assertException.ProblemDetails);
             context.ExceptionHandled = true;
         }
     }
