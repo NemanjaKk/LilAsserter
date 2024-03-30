@@ -21,6 +21,8 @@ public class AsserterService
             : null;
     }
 
+    public List<ErrorModel> GetErrorModels() => Errors;
+
     public AsserterService AssertBreak(bool condition, string? message = null, string? loggingDetails = null)
     {
         if (!condition)
@@ -56,7 +58,33 @@ public class AsserterService
         return this;
     }
 
-    public List<ErrorModel> GetErrorModels() => Errors;
+    private void LogWarning(string errorLocation, string? message, string? loggingDetails)
+    {
+        Log(LogLevel.Warning, errorLocation, message, loggingDetails);
+    }
+
+    private void LogError(string errorLocation, string? message, string? loggingDetails)
+    {
+        Log(LogLevel.Error, errorLocation, message, loggingDetails);
+    }
+
+    private void Log(LogLevel logLevel, string errorLocation, string? message, string? loggingDetails)
+    {
+        string logMessage = string.Empty;
+        if (!string.IsNullOrEmpty(message))
+        {
+            logMessage += message + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(loggingDetails))
+        {
+            logMessage += loggingDetails + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(errorLocation))
+        {
+            logMessage += errorLocation + Environment.NewLine;
+        }
+        _logger?.Log(logLevel, logMessage);
+    }
 
     private ProblemDetails GenerateProblemDetails()
     {
@@ -81,31 +109,5 @@ public class AsserterService
         problemDetails.Extensions["errors"] = formattedErrors;
 
         return problemDetails;
-    }
-
-    private void LogWarning(string errorLocation, string? message, string? loggingDetails)
-    {
-        Log(LogLevel.Warning, errorLocation, message, loggingDetails);
-    }
-    private void LogError(string errorLocation, string? message, string? loggingDetails)
-    {
-        Log(LogLevel.Error, errorLocation, message, loggingDetails);
-    }
-    private void Log(LogLevel logLevel, string errorLocation, string? message, string? loggingDetails)
-    {
-        string logMessage = "";
-        if (!string.IsNullOrEmpty(message))
-        {
-            logMessage += message + Environment.NewLine;
-        }
-        if (!string.IsNullOrEmpty(loggingDetails))
-        {
-            logMessage += loggingDetails + Environment.NewLine;
-        }
-        if (!string.IsNullOrEmpty(errorLocation))
-        {
-            logMessage += errorLocation + Environment.NewLine;
-        }
-        _logger?.Log(logLevel, logMessage);
     }
 }
