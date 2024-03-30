@@ -7,11 +7,9 @@ public static class AsserterExtensions
 
         options ??= new();
 
-        services.AddHttpContextAccessor();
         services.AddScoped<AsserterService>(serviceProvider =>
         {
-            var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
-            return new AsserterService(options, serviceProvider, httpContextAccessor);
+            return new AsserterService(options, serviceProvider);
         });
 
         var serviceProvider = services.BuildServiceProvider();

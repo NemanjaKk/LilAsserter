@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Net;
 
 namespace LilAsserter.AsserterFiles;
@@ -6,33 +7,31 @@ public class AsserterService
 {
     private readonly List<ErrorModel> Errors = [];
     private readonly ILogger<AsserterService>? _logger;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     private readonly bool IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
-    public AsserterService(AsserterOptions options, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
+    public AsserterService(AsserterOptions options, IServiceProvider serviceProvider)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(serviceProvider);
-        ArgumentNullException.ThrowIfNull(httpContextAccessor);
 
-        _httpContextAccessor = httpContextAccessor;
         _logger = options.EnableLogging
             ? serviceProvider.GetService<ILogger<AsserterService>>()
                 ?? throw new InvalidOperationException(nameof(ILogger<AsserterService>) + " not available in the service provider")
             : null;
     }
 
-    public AsserterService AssertBreak(bool condition, string errorLocation, string? message = null, string? loggingDetails = null)
+    public AsserterService AssertBreak(bool condition, string? message = null, string? loggingDetails = null)
     {
         if (!condition)
         {
-            LogError(errorLocation, message, loggingDetails);
+            string fullStackTrace = new StackTrace(2, true).ToString();
+            LogError(fullStackTrace, message, loggingDetails);
 
             Errors.Add(new()
             {
                 Message = message ?? "An error occured",
-                Trace = errorLocation,
+                Trace = fullStackTrace,
                 Details = loggingDetails
             });
             throw new AssertException(GenerateProblemDetails());
@@ -40,16 +39,17 @@ public class AsserterService
         return this;
     }
 
-    public AsserterService Assert(bool condition, string errorLocation, string? message = null, string? loggingDetails = null)
+    public AsserterService Assert(bool condition, string? message = null, string? loggingDetails = null)
     {
         if (!condition)
         {
-            LogWarning(errorLocation, message, loggingDetails);
+            string fullStackTrace = new StackTrace(2, true).ToString();
+            LogWarning(fullStackTrace, message, loggingDetails);
 
             Errors.Add(new()
             {
                 Message = message ?? "An error occured",
-                Trace = errorLocation,
+                Trace = fullStackTrace,
                 Details = loggingDetails
             });
         }
@@ -66,13 +66,6 @@ public class AsserterService
             Detail = "Errors occurred while processing the request",
             Status = (int)HttpStatusCode.BadRequest
         };
-
-        var request = _httpContextAccessor.HttpContext?.Request;
-        if (request is not null)
-        {
-            problemDetails.Type = request.Scheme + "://" + request.Host;
-            problemDetails.Instance = request.Scheme + "://" + request.Host + request.Path + request.QueryString;
-        }
 
         List<ErrorModel> formattedErrors = [];
         foreach (var error in Errors)

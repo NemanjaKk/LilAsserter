@@ -16,9 +16,7 @@ public static partial class Asserter
         string? message = null,
         string? loggingDetails = null)
     {
-        string fullStackTrace = new StackTrace(1, true).ToString();
-
-        _asserterService.Assert(condition, fullStackTrace, message, loggingDetails);
+        _asserterService.Assert(condition, message, loggingDetails);
     }
 
     public static void AssertBreak(
@@ -26,8 +24,6 @@ public static partial class Asserter
         string? message = null,
         string? loggingDetails = null)
     {
-        string fullStackTrace = new StackTrace(1, true).ToString();
-
-        _asserterService.AssertBreak(condition, fullStackTrace, message, loggingDetails);
+        _asserterService.AssertBreak(condition, message, loggingDetails);
     }
 }
