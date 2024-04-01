@@ -209,5 +209,57 @@ namespace LilAsserter.AsserterNemagus
 		{
 			Assert(false, true, message, loggingDetails);
 		}
+
+		public Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+		{
+			bool isEmpty = true;
+
+			foreach (var _ in collection)
+			{
+				isEmpty = false;
+				break;
+			}
+
+			return Assert(isEmpty, true, message, loggingDetails);
+		}
+
+		public Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+		{
+			bool isEmpty = true;
+
+			foreach (var _ in collection)
+			{
+				isEmpty = false;
+				break;
+			}
+
+			return Assert(isEmpty, false, message, loggingDetails);
+		}
+
+		public Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+		{
+			bool isEmpty = false;
+
+			foreach (var _ in collection)
+			{
+				isEmpty = true;
+				break;
+			}
+
+			return Assert(isEmpty, true, message, loggingDetails);
+		}
+
+		public Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+		{
+			bool isEmpty = false;
+
+			foreach (var _ in collection)
+			{
+				isEmpty = true;
+				break;
+			}
+
+			return Assert(isEmpty, false, message, loggingDetails);
+		}
 	}
 }

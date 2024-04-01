@@ -31,6 +31,11 @@ namespace LilAsserter.AsserterNemagus
 		Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null);
 		Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null);
 
+		Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
+		Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
+		Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
+		Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
+
 		void Fail(string? message = null, string? loggingDetails = null);
 
 		List<ErrorModel> GetErrorModels();
