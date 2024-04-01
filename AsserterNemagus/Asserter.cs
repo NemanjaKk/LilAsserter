@@ -14,6 +14,12 @@ namespace LilAsserter.AsserterNemagus
         private readonly ILogger<Asserter>? _logger;
         private readonly AsserterOptions _options;
 
+        private string DefaultErrorMessage => _options.DefaultErrorMessage;
+        private string SingularErrorTitle => _options.SingularErrorTitle;
+        private string MultipleErrorsTitle => _options.MultipleErrorsTitle;
+        private string SingularErrorDetail => _options.SingularErrorDetail;
+        private string MultipleErrorsDetail => _options.MultipleErrorsDetail;
+
         private readonly bool IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
         public Asserter(IOptions<AsserterOptions> options, ILogger<Asserter> logger)
@@ -197,7 +203,7 @@ namespace LilAsserter.AsserterNemagus
 
                 Errors.Add(new ErrorModel()
                 {
-                    Message = message ?? "An error occurred",
+                    Message = message ?? DefaultErrorMessage,
                     StackTrace = fullStackTrace,
                     Details = loggingDetails
                 });
@@ -232,14 +238,18 @@ namespace LilAsserter.AsserterNemagus
 
         private ProblemDetails GetBaseProblemDetails()
         {
+            string title = Errors.Count > 1
+                ? MultipleErrorsTitle
+                : SingularErrorTitle;
+
+            string detail = Errors.Count > 1
+                ? MultipleErrorsDetail
+                : SingularErrorDetail;
+
             return new ProblemDetails()
             {
-                Title = Errors.Count > 1
-                    ? "Errors occurred"
-                    : "Error occurred",
-                Detail = Errors.Count > 1
-                    ? "Errors occurred while processing the request"
-                    : "Error occurred while processing the request",
+                Title = title,
+                Detail = detail,
                 Status = (int)HttpStatusCode.BadRequest
             };
         }
