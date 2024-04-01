@@ -4,8 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAsserter(new AsserterOptions()
 {
-    EnableLogging = true,
-    EnableExceptionFilter = true
+    EnableLogging = true
 });
 
 builder.Services.AddControllers(options =>

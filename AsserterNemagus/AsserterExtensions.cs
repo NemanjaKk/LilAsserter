@@ -29,11 +29,7 @@ namespace LilAsserter.AsserterNemagus
                 options.EnableExceptionFilter = asserterOptions.EnableExceptionFilter;
             });
             serviceCollection.AddScoped<IAsserter, Asserter>();
-
-            if (asserterOptions.EnableExceptionFilter)
-            {
-                serviceCollection.AddScoped<AsserterExceptionFilter>();
-            }
+            serviceCollection.AddScoped<AsserterExceptionFilter>();
 
             return serviceCollection;
         }
