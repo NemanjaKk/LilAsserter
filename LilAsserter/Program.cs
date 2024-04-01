@@ -3,10 +3,8 @@ using LilAsserter.AsserterFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAsserter(new AsserterOptions
-{
-    EnableLogging = true
-});
+builder.Services.Configure<AsserterOptions>(builder.Configuration.GetSection("AsserterOptions"));
+builder.Services.AddAsserter();
 
 builder.Services.AddControllers(options =>
 {
