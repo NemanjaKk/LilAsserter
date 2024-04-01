@@ -105,7 +105,31 @@ namespace LilAsserter.AsserterNemagus
 			return Assert(nullableObject != null, true, message, loggingDetails);
 		}
 
-        public List<ErrorModel> GetErrorModels() => Errors;
+		public Asserter Equal<T>(T first, T second, string? message = null, string? loggingDetails = null)
+		{
+			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+			return Assert(areEqual, true, message, loggingDetails);
+		}
+
+		public Asserter EqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+		{
+			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+			return Assert(areEqual, false, message, loggingDetails);
+		}
+
+		public Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null)
+		{
+			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+			return Assert(!areEqual, true, message, loggingDetails);
+		}
+
+		public Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+		{
+			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+			return Assert(!areEqual, false, message, loggingDetails);
+		}
+
+		public List<ErrorModel> GetErrorModels() => Errors;
 
 		private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
         {
