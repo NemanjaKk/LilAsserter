@@ -31,17 +31,42 @@ namespace LilAsserter.AsserterNemagus
             _logger = _options.EnableLogging ? logger : null;
         }
 
-        public Asserter Assert(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
         {
             return Assert(condition, true, message, loggingDetails);
         }
-
-        public Asserter AssertContinue(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter False(bool condition, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(!condition, true, message, loggingDetails);
+        }
+        public Asserter TrueContinue(bool condition, string? message = null, string? loggingDetails = null)
         {
             return Assert(condition, false, message, loggingDetails);
         }
+        public Asserter FalseContinue(bool condition, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(!condition, false, message, loggingDetails);
+        }
+		public Asserter True(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(conditionFunc(), true, message, loggingDetails);
+		}
+        public Asserter False(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(!conditionFunc(), true, message, loggingDetails);
+		}
+		public Asserter TrueContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(conditionFunc(), false, message, loggingDetails);
+		}
+		public Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(!conditionFunc(), false, message, loggingDetails);
+		}
 
-        private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
+        public List<ErrorModel> GetErrorModels() => Errors;
+
+		private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
         {
             if (!condition)
             {
@@ -62,8 +87,6 @@ namespace LilAsserter.AsserterNemagus
             }
             return this;
         }
-
-        public List<ErrorModel> GetErrorModels() => Errors;
 
         private ProblemDetails GenerateProblemDetails()
         {
