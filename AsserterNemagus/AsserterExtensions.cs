@@ -7,7 +7,7 @@ namespace LilAsserter.AsserterNemagus
     {
         public static IServiceCollection AddAsserter(this IServiceCollection serviceCollection, AsserterOptions? asserterOptions = null)
         {
-			if (serviceCollection is null)
+			if (serviceCollection == null)
 			{
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}

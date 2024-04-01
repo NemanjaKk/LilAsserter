@@ -18,11 +18,11 @@ namespace LilAsserter.AsserterNemagus
 
         public Asserter(IOptions<AsserterOptions> options, ILogger<Asserter> logger)
         {
-            if (options is null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
-			if (logger is null)
+			if (logger == null)
 			{
 				throw new ArgumentNullException(nameof(logger));
 			}
@@ -62,6 +62,47 @@ namespace LilAsserter.AsserterNemagus
 		public Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
 		{
 			return Assert(!conditionFunc(), false, message, loggingDetails);
+		}
+
+
+		public Asserter Null(object? nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject == null, true, message, loggingDetails);
+		}
+
+		public Asserter Null(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject == null, true, message, loggingDetails);
+		}
+
+		public Asserter NullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject == null, true, message, loggingDetails);
+		}
+
+		public Asserter NullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject == null, true, message, loggingDetails);
+		}
+
+		public Asserter NotNull(object? nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject != null, true, message, loggingDetails);
+		}
+
+		public Asserter NotNull(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject != null, true, message, loggingDetails);
+		}
+
+		public Asserter NotNullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject != null, true, message, loggingDetails);
+		}
+
+		public Asserter NotNullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+		{
+			return Assert(nullableObject != null, true, message, loggingDetails);
 		}
 
         public List<ErrorModel> GetErrorModels() => Errors;
@@ -139,5 +180,5 @@ namespace LilAsserter.AsserterNemagus
             }
             _logger?.Log(logLevel, logMessage);
         }
-    }
+	}
 }
