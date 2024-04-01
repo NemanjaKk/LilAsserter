@@ -16,7 +16,7 @@ namespace LilAsserter.AsserterNemagus
         /// <summary>
         /// Initializes a new instance of the <see cref="AssertException"/> class with the specified problem details.
         /// </summary>
-        /// <param name="problemDetails">The details of the problem associated with the assertion failure.</param>
+        /// <param name="problemDetails">The details of the errors associated with the assertion failure.</param>
         public AssertException(ProblemDetails problemDetails)
         {
             ProblemDetails = problemDetails;
