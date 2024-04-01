@@ -1,13 +1,23 @@
-﻿using System.Text.Json.Serialization;
-
-namespace LilAsserter.AsserterNemagus
+﻿namespace LilAsserter.AsserterNemagus
 {
+    /// <summary>
+    /// Represents an error model containing information about an error.
+    /// </summary>
     public class ErrorModel
     {
+        /// <summary>
+        /// Gets or sets the message describing the error.
+        /// </summary>
         public string Message { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
+        /// <summary>
+        /// Gets or sets additional details about the error, if available.
+        /// </summary>
         public string? Details { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Trace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stack trace associated with the error, if available.
+        /// </summary>
+        public string? StackTrace { get; set; }
     }
 }

@@ -22,16 +22,16 @@ namespace LilAsserter.AsserterNemagus
             {
                 throw new ArgumentNullException(nameof(options));
             }
-			if (logger == null)
-			{
-				throw new ArgumentNullException(nameof(logger));
-			}
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
 
-			_options = options.Value;
+            _options = options.Value;
             _logger = _options.EnableLogging ? logger : null;
         }
 
-		public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
         {
             return Assert(condition, true, message, loggingDetails);
         }
@@ -47,91 +47,148 @@ namespace LilAsserter.AsserterNemagus
         {
             return Assert(!condition, false, message, loggingDetails);
         }
-		public Asserter True(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(conditionFunc(), true, message, loggingDetails);
-		}
+        public Asserter True(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(conditionFunc(), true, message, loggingDetails);
+        }
         public Asserter False(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(!conditionFunc(), true, message, loggingDetails);
-		}
-		public Asserter TrueContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(conditionFunc(), false, message, loggingDetails);
-		}
-		public Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(!conditionFunc(), false, message, loggingDetails);
-		}
+        {
+            return Assert(!conditionFunc(), true, message, loggingDetails);
+        }
+        public Asserter TrueContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(conditionFunc(), false, message, loggingDetails);
+        }
+        public Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(!conditionFunc(), false, message, loggingDetails);
+        }
 
 
-		public Asserter Null(object? nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject == null, true, message, loggingDetails);
-		}
+        public Asserter Null(object? nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject == null, true, message, loggingDetails);
+        }
 
-		public Asserter Null(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject == null, true, message, loggingDetails);
-		}
+        public Asserter Null(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject == null, true, message, loggingDetails);
+        }
 
-		public Asserter NullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject == null, true, message, loggingDetails);
-		}
+        public Asserter NullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject == null, true, message, loggingDetails);
+        }
 
-		public Asserter NullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject == null, true, message, loggingDetails);
-		}
+        public Asserter NullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject == null, true, message, loggingDetails);
+        }
 
-		public Asserter NotNull(object? nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject != null, true, message, loggingDetails);
-		}
+        public Asserter NotNull(object? nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject != null, true, message, loggingDetails);
+        }
 
-		public Asserter NotNull(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject != null, true, message, loggingDetails);
-		}
+        public Asserter NotNull(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject != null, true, message, loggingDetails);
+        }
 
-		public Asserter NotNullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject != null, true, message, loggingDetails);
-		}
+        public Asserter NotNullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject != null, true, message, loggingDetails);
+        }
 
-		public Asserter NotNullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
-		{
-			return Assert(nullableObject != null, true, message, loggingDetails);
-		}
+        public Asserter NotNullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        {
+            return Assert(nullableObject != null, true, message, loggingDetails);
+        }
 
-		public Asserter Equal<T>(T first, T second, string? message = null, string? loggingDetails = null)
-		{
-			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-			return Assert(areEqual, true, message, loggingDetails);
-		}
+        public Asserter Equal<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        {
+            var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+            return Assert(areEqual, true, message, loggingDetails);
+        }
 
-		public Asserter EqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
-		{
-			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-			return Assert(areEqual, false, message, loggingDetails);
-		}
+        public Asserter EqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        {
+            var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+            return Assert(areEqual, false, message, loggingDetails);
+        }
 
-		public Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null)
-		{
-			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-			return Assert(!areEqual, true, message, loggingDetails);
-		}
+        public Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        {
+            var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+            return Assert(!areEqual, true, message, loggingDetails);
+        }
 
-		public Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
-		{
-			var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-			return Assert(!areEqual, false, message, loggingDetails);
-		}
+        public Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        {
+            var areEqual = EqualityComparer<T>.Default.Equals(first, second);
+            return Assert(!areEqual, false, message, loggingDetails);
+        }
 
-		public List<ErrorModel> GetErrorModels() => Errors;
+        public List<ErrorModel> GetErrorModels() => Errors;
 
-		private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
+        public void Fail(string? message = null, string? loggingDetails = null)
+        {
+            Assert(false, true, message, loggingDetails);
+        }
+
+        public Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        {
+            bool isEmpty = true;
+
+            foreach (var _ in collection)
+            {
+                isEmpty = false;
+                break;
+            }
+
+            return Assert(isEmpty, true, message, loggingDetails);
+        }
+
+        public Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        {
+            bool isEmpty = true;
+
+            foreach (var _ in collection)
+            {
+                isEmpty = false;
+                break;
+            }
+
+            return Assert(isEmpty, false, message, loggingDetails);
+        }
+
+        public Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        {
+            bool isEmpty = false;
+
+            foreach (var _ in collection)
+            {
+                isEmpty = true;
+                break;
+            }
+
+            return Assert(isEmpty, true, message, loggingDetails);
+        }
+
+        public Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        {
+            bool isEmpty = false;
+
+            foreach (var _ in collection)
+            {
+                isEmpty = true;
+                break;
+            }
+
+            return Assert(isEmpty, false, message, loggingDetails);
+        }
+
+        private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
         {
             if (!condition)
             {
@@ -141,7 +198,7 @@ namespace LilAsserter.AsserterNemagus
                 Errors.Add(new ErrorModel()
                 {
                     Message = message ?? "An error occurred",
-                    Trace = fullStackTrace,
+                    StackTrace = fullStackTrace,
                     Details = loggingDetails
                 });
 
@@ -164,7 +221,7 @@ namespace LilAsserter.AsserterNemagus
                 {
                     Message = error.Message,
                     Details = IsDevelopment ? error.Details : null,
-                    Trace = IsDevelopment ? error.Trace : null
+                    StackTrace = IsDevelopment ? error.StackTrace : null
                 };
                 formattedErrors.Add(formattedError);
             }
@@ -204,62 +261,5 @@ namespace LilAsserter.AsserterNemagus
             }
             _logger?.Log(logLevel, logMessage);
         }
-
-		public void Fail(string? message = null, string? loggingDetails = null)
-		{
-			Assert(false, true, message, loggingDetails);
-		}
-
-		public Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
-		{
-			bool isEmpty = true;
-
-			foreach (var _ in collection)
-			{
-				isEmpty = false;
-				break;
-			}
-
-			return Assert(isEmpty, true, message, loggingDetails);
-		}
-
-		public Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
-		{
-			bool isEmpty = true;
-
-			foreach (var _ in collection)
-			{
-				isEmpty = false;
-				break;
-			}
-
-			return Assert(isEmpty, false, message, loggingDetails);
-		}
-
-		public Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
-		{
-			bool isEmpty = false;
-
-			foreach (var _ in collection)
-			{
-				isEmpty = true;
-				break;
-			}
-
-			return Assert(isEmpty, true, message, loggingDetails);
-		}
-
-		public Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
-		{
-			bool isEmpty = false;
-
-			foreach (var _ in collection)
-			{
-				isEmpty = true;
-				break;
-			}
-
-			return Assert(isEmpty, false, message, loggingDetails);
-		}
-	}
+    }
 }
