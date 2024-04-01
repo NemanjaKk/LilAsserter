@@ -204,5 +204,10 @@ namespace LilAsserter.AsserterNemagus
             }
             _logger?.Log(logLevel, logMessage);
         }
+
+		public void Fail(string? message = null, string? loggingDetails = null)
+		{
+			Assert(false, true, message, loggingDetails);
+		}
 	}
 }
