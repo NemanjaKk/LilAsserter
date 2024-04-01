@@ -5,13 +5,18 @@ namespace LilAsserter.AsserterNemagus
 {
     public static class AsserterExtensions
     {
-        public static IServiceCollection AddAsserter(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddAsserter(this IServiceCollection serviceCollection, AsserterOptions? asserterOptions = null)
         {
 			if (serviceCollection is null)
 			{
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
+			asserterOptions ??= new AsserterOptions();
 
+			serviceCollection.Configure<AsserterOptions>(options =>
+			{
+				options.EnableLogging = asserterOptions.EnableLogging;
+			});
 			serviceCollection.AddScoped<IAsserter, Asserter>();
 
 			serviceCollection.AddScoped<AsserterExceptionFilter>();

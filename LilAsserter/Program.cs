@@ -2,8 +2,10 @@ using LilAsserter.AsserterNemagus;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<AsserterOptions>(builder.Configuration.GetSection("AsserterOptions"));
-builder.Services.AddAsserter();
+builder.Services.AddAsserter(new AsserterOptions()
+{
+    EnableLogging = true
+});
 
 builder.Services.AddControllers(options =>
 {
