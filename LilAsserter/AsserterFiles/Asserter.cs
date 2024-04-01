@@ -1,33 +1,109 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Diagnostics;
+using System.Net;
 
 namespace LilAsserter.AsserterFiles;
-public static partial class Asserter
+public class Asserter : IAsserter
 {
-    private static AsserterService _asserterService;
-    public static void Initialize(AsserterService asserterService)
-    {
-        ArgumentNullException.ThrowIfNull(asserterService);
+    private readonly List<ErrorModel> Errors = [];
+    private readonly ILogger<Asserter>? _logger;
+	private readonly AsserterOptions _options;
 
-        _asserterService = asserterService;
+	private readonly bool IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
+	public Asserter(IOptions<AsserterOptions> options, ILogger<Asserter> logger)
+	{
+		ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(logger);
+
+		_options = options.Value;
+		_logger = _options.EnableLogging ? logger : null;
     }
 
-    public static void Assert(
-        bool condition,
-        string? message = null,
-        string? loggingDetails = null)
+    public Asserter Assert(bool condition, string? message = null, string? loggingDetails = null)
     {
-        string fullStackTrace = new StackTrace(1, true).ToString();
-
-        _asserterService.Assert(condition, fullStackTrace, message, loggingDetails);
+		return Assert(condition, true, message, loggingDetails);
     }
 
-    public static void AssertBreak(
-        bool condition,
-        string? message = null,
-        string? loggingDetails = null)
+    public Asserter AssertContinue(bool condition, string? message = null, string? loggingDetails = null)
     {
-        string fullStackTrace = new StackTrace(1, true).ToString();
+		return Assert(condition, false, message, loggingDetails);
+    }
 
-        _asserterService.AssertBreak(condition, fullStackTrace, message, loggingDetails);
+	private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
+	{
+		if (!condition)
+		{
+			string fullStackTrace = new StackTrace(2, true).ToString();
+			Log(isBreaking ? LogLevel.Error : LogLevel.Warning, fullStackTrace, message, loggingDetails);
+
+			Errors.Add(new()
+			{
+				Message = message ?? "An error occurred",
+				Trace = fullStackTrace,
+				Details = loggingDetails
+			});
+
+            if (isBreaking)
+            {
+				throw new AssertException(GenerateProblemDetails());
+			}
+		}
+		return this;
+	}
+
+	public List<ErrorModel> GetErrorModels() => Errors;
+
+    private ProblemDetails GenerateProblemDetails()
+    {
+        var problemDetails = GetBaseProblemDetails();
+
+		List<ErrorModel> formattedErrors = [];
+        foreach (var error in Errors)
+        {
+            var formattedError = new ErrorModel
+            {
+                Message = error.Message,
+                Details = IsDevelopment ? error.Details : null,
+                Trace = IsDevelopment ? error.Trace : null
+            };
+            formattedErrors.Add(formattedError);
+        }
+        problemDetails.Extensions["errors"] = formattedErrors;
+
+        return problemDetails;
+    }
+
+    private ProblemDetails GetBaseProblemDetails()
+    {
+        return new ProblemDetails()
+        {
+            Title = Errors.Count > 1
+                ? "Errors occurred"
+                : "Error occurred",
+            Detail = Errors.Count > 1
+                ? "Errors occurred while processing the request"
+                : "Error occurred while processing the request",
+            Status = (int)HttpStatusCode.BadRequest
+        };
+    }
+
+    private void Log(LogLevel logLevel, string errorLocation, string? message, string? loggingDetails)
+    {
+        string logMessage = string.Empty;
+        if (!string.IsNullOrEmpty(message))
+        {
+            logMessage += message + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(loggingDetails))
+        {
+            logMessage += loggingDetails + Environment.NewLine;
+        }
+        if (!string.IsNullOrEmpty(errorLocation))
+        {
+            logMessage += errorLocation + Environment.NewLine;
+        }
+        _logger?.Log(logLevel, logMessage);
     }
 }
