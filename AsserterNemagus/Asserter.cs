@@ -31,7 +31,7 @@ namespace LilAsserter.AsserterNemagus
             _logger = _options.EnableLogging ? logger : null;
         }
 
-        public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
+		public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
         {
             return Assert(condition, true, message, loggingDetails);
         }

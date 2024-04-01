@@ -19,6 +19,7 @@ public class StuffController : ControllerBase
         StringReader? reader = null;
         string text1 = "Text1";
         string text2 = "Text2";
+
         _asserter.EqualContinue(text1, text2, "Text is not the same");
         _asserter.TrueContinue(() =>
             {
