@@ -1,19 +1,23 @@
 ﻿namespace LilAsserter.AsserterFiles;
 public static class AsserterExtensions
 {
-    public static IServiceCollection AddAsserter(this IServiceCollection serviceCollection, AsserterOptions? options = null)
+    public static IServiceCollection AddAsserter(this IServiceCollection services, AsserterOptions? options = null)
     {
-        ArgumentNullException.ThrowIfNull(serviceCollection);
+        ArgumentNullException.ThrowIfNull(services);
 
         options ??= new();
 
-        serviceCollection.AddScoped<AsserterService>(serviceProvider =>
+        services.AddScoped<AsserterService>(serviceProvider =>
         {
             return new AsserterService(options, serviceProvider);
         });
-        serviceCollection.AddScoped<AsserterInitializer>();
-        serviceCollection.AddHostedService<AsserterInitializationService>();
 
-        return serviceCollection;
+        var serviceProvider = services.BuildServiceProvider();
+        var asserterService = serviceProvider.GetRequiredService<AsserterService>();
+        Asserter.Initialize(asserterService);
+
+        services.AddScoped<AsserterExceptionFilter>();
+
+        return services;
     }
 }

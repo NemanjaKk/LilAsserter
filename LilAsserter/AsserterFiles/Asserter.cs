@@ -1,4 +1,6 @@
-﻿namespace LilAsserter.AsserterFiles;
+﻿using System.Diagnostics;
+
+namespace LilAsserter.AsserterFiles;
 public static partial class Asserter
 {
     private static AsserterService _asserterService;
