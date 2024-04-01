@@ -26,7 +26,6 @@ namespace LilAsserter.AsserterNemagus
             serviceCollection.Configure<AsserterOptions>(options =>
             {
                 options.EnableLogging = asserterOptions.EnableLogging;
-                options.EnableExceptionFilter = asserterOptions.EnableExceptionFilter;
             });
             serviceCollection.AddScoped<IAsserter, Asserter>();
             serviceCollection.AddScoped<AsserterExceptionFilter>();
