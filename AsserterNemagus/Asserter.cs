@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AsserterNemagus;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,6 +12,8 @@ namespace LilAsserter.AsserterNemagus
     public class Asserter : IAsserter
     {
         private readonly List<ErrorModel> Errors = new List<ErrorModel>();
+        private readonly AssertionState State = new AssertionState();
+
         private readonly ILogger<Asserter>? _logger;
         private readonly AsserterOptions _options;
 
@@ -35,114 +38,109 @@ namespace LilAsserter.AsserterNemagus
 
             _options = options.Value;
             _logger = _options.EnableLogging ? logger : null;
+            State.Message = _options.DefaultErrorMessage;
         }
 
-        public Asserter True(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter True(bool condition)
         {
-            return Assert(condition, true, message, loggingDetails);
+            return Assert(condition, true);
         }
-        public Asserter False(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter False(bool condition)
         {
-            return Assert(!condition, true, message, loggingDetails);
+            return Assert(!condition, true);
         }
-        public Asserter TrueContinue(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter TrueContinue(bool condition)
         {
-            return Assert(condition, false, message, loggingDetails);
+            return Assert(condition, false);
         }
-        public Asserter FalseContinue(bool condition, string? message = null, string? loggingDetails = null)
+        public Asserter FalseContinue(bool condition)
         {
-            return Assert(!condition, false, message, loggingDetails);
+            return Assert(!condition, false);
         }
-        public Asserter True(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        public Asserter True(Func<bool> conditionFunc)
         {
-            return Assert(conditionFunc(), true, message, loggingDetails);
+            return Assert(conditionFunc(), true);
         }
-        public Asserter False(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        public Asserter False(Func<bool> conditionFunc)
         {
-            return Assert(!conditionFunc(), true, message, loggingDetails);
+            return Assert(!conditionFunc(), true);
         }
-        public Asserter TrueContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        public Asserter TrueContinue(Func<bool> conditionFunc)
         {
-            return Assert(conditionFunc(), false, message, loggingDetails);
+            return Assert(conditionFunc(), false);
         }
-        public Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null)
+        public Asserter FalseContinue(Func<bool> conditionFunc)
         {
-            return Assert(!conditionFunc(), false, message, loggingDetails);
-        }
-
-
-        public Asserter Null(object? nullableObject, string? message = null, string? loggingDetails = null)
-        {
-            return Assert(nullableObject == null, true, message, loggingDetails);
+            return Assert(!conditionFunc(), false);
         }
 
-        public Asserter Null(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter Null(object? nullableObject)
         {
-            return Assert(nullableObject == null, true, message, loggingDetails);
+            return Assert(nullableObject == null, true);
         }
 
-        public Asserter NullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter Null(Func<object?> nullableObject)
         {
-            return Assert(nullableObject == null, true, message, loggingDetails);
+            return Assert(nullableObject == null, true);
         }
 
-        public Asserter NullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter NullContinue(object? nullableObject)
         {
-            return Assert(nullableObject == null, true, message, loggingDetails);
+            return Assert(nullableObject == null, true);
         }
 
-        public Asserter NotNull(object? nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter NullContinue(Func<object?> nullableObject)
         {
-            return Assert(nullableObject != null, true, message, loggingDetails);
+            return Assert(nullableObject == null, true);
         }
 
-        public Asserter NotNull(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter NotNull(object? nullableObject)
         {
-            return Assert(nullableObject != null, true, message, loggingDetails);
+            return Assert(nullableObject != null, true);
         }
 
-        public Asserter NotNullContinue(object? nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter NotNull(Func<object?> nullableObject)
         {
-            return Assert(nullableObject != null, true, message, loggingDetails);
+            return Assert(nullableObject != null, true);
         }
 
-        public Asserter NotNullContinue(Func<object?> nullableObject, string? message = null, string? loggingDetails = null)
+        public Asserter NotNullContinue(object? nullableObject)
         {
-            return Assert(nullableObject != null, true, message, loggingDetails);
+            return Assert(nullableObject != null, true);
         }
 
-        public Asserter Equal<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        public Asserter NotNullContinue(Func<object?> nullableObject)
+        {
+            return Assert(nullableObject != null, true);
+        }
+
+        public Asserter Equal<T>(T first, T second)
         {
             var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-            return Assert(areEqual, true, message, loggingDetails);
+            return Assert(areEqual, true);
         }
 
-        public Asserter EqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        public Asserter EqualContinue<T>(T first, T second)
         {
             var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-            return Assert(areEqual, false, message, loggingDetails);
+            return Assert(areEqual, false);
         }
 
-        public Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        public Asserter NotEqual<T>(T first, T second)
         {
             var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-            return Assert(!areEqual, true, message, loggingDetails);
+            return Assert(!areEqual, true);
         }
 
-        public Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null)
+        public Asserter NotEqualContinue<T>(T first, T second)
         {
             var areEqual = EqualityComparer<T>.Default.Equals(first, second);
-            return Assert(!areEqual, false, message, loggingDetails);
+            return Assert(!areEqual, false);
         }
 
         public List<ErrorModel> GetErrorModels() => Errors;
 
-        public void Fail(string? message = null, string? loggingDetails = null)
-        {
-            Assert(false, true, message, loggingDetails);
-        }
-
-        public Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        public Asserter Empty<T>(IEnumerable<T> collection)
         {
             bool isEmpty = true;
 
@@ -152,10 +150,10 @@ namespace LilAsserter.AsserterNemagus
                 break;
             }
 
-            return Assert(isEmpty, true, message, loggingDetails);
+            return Assert(isEmpty, true);
         }
 
-        public Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        public Asserter EmptyContinue<T>(IEnumerable<T> collection)
         {
             bool isEmpty = true;
 
@@ -165,10 +163,10 @@ namespace LilAsserter.AsserterNemagus
                 break;
             }
 
-            return Assert(isEmpty, false, message, loggingDetails);
+            return Assert(isEmpty, false);
         }
 
-        public Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        public Asserter NotEmpty<T>(IEnumerable<T> collection)
         {
             bool isEmpty = false;
 
@@ -178,10 +176,10 @@ namespace LilAsserter.AsserterNemagus
                 break;
             }
 
-            return Assert(isEmpty, true, message, loggingDetails);
+            return Assert(isEmpty, true);
         }
 
-        public Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null)
+        public Asserter NotEmptyContinue<T>(IEnumerable<T> collection)
         {
             bool isEmpty = false;
 
@@ -191,29 +189,79 @@ namespace LilAsserter.AsserterNemagus
                 break;
             }
 
-            return Assert(isEmpty, false, message, loggingDetails);
+            return Assert(isEmpty, false);
         }
 
-        private Asserter Assert(bool condition, bool isBreaking, string? message = null, string? loggingDetails = null)
+        private Asserter Assert(bool condition, bool isBreaking)
         {
-            if (!condition)
+            if (State.AssertionSet)
             {
-                string fullStackTrace = new StackTrace(2, true).ToString();
-                Log(isBreaking ? LogLevel.Error : LogLevel.Warning, fullStackTrace, message, loggingDetails);
+                throw new InvalidOperationException("Can not have multiple assertions at once.");
+            }
+
+            State.AssertionSet = true;
+            State.Failed = !condition;
+            State.IsBreaking = isBreaking;
+            return this;
+        }
+        public Asserter Message(string message)
+        {
+            State.Message = message;
+            return this;
+        }
+        public Asserter Log(string message, LogLevel? logLevel = null)
+        {
+            State.LoggingDetails = message;
+            State.LoggingLevel = logLevel;
+            return this;
+        }
+        public Asserter Log(LogLevel logLevel, string message)
+        {
+            State.LoggingDetails = message;
+            State.LoggingLevel = logLevel;
+            return this;
+        }
+        public void Assert()
+        {
+            if (State.Failed)
+            {
+                string fullStackTrace = new StackTrace(1, true).ToString();
+
+                Log(State.IsBreaking
+                        ? State.LoggingLevel ?? LogLevel.Error
+                        : State.LoggingLevel ?? LogLevel.Warning,
+                    fullStackTrace,
+                    State.Message,
+                    State.LoggingDetails);
 
                 Errors.Add(new ErrorModel()
                 {
-                    Message = message ?? DefaultErrorMessage,
+                    Message = State.Message ?? DefaultErrorMessage,
                     StackTrace = fullStackTrace,
-                    Details = loggingDetails
+                    Details = State.LoggingDetails
                 });
 
-                if (isBreaking)
+                if (State.IsBreaking)
                 {
                     throw new AssertException(GenerateProblemDetails());
                 }
             }
-            return this;
+            ClearState();
+        }
+        public void Fail()
+        {
+            Assert(false, true);
+            Assert();
+        }
+
+        private void ClearState()
+        {
+            State.AssertionSet = false;
+            State.IsBreaking = false;
+            State.Failed = false;
+            State.Message = DefaultErrorMessage;
+            State.LoggingDetails = null;
+            State.LoggingLevel = null;
         }
 
         private ProblemDetails GenerateProblemDetails()

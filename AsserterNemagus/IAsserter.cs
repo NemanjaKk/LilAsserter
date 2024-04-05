@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace LilAsserter.AsserterNemagus
@@ -9,232 +10,156 @@ namespace LilAsserter.AsserterNemagus
     public interface IAsserter
     {
         /// <summary>
-        /// Verifies that the expression is true.
+        /// Asserts that the condition is true.
         /// </summary>
-        /// <param name="condition">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is false.</exception>
-        Asserter True(bool condition, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is true.
-        /// </summary>
-        /// <param name="conditionFunc">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is false.</exception>
-        Asserter True(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is true.
-        /// </summary>
-        /// <param name="condition">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter TrueContinue(bool condition, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is true.
-        /// </summary>
-        /// <param name="conditionFunc">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter TrueContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null);
+        Asserter True(bool condition);
 
         /// <summary>
-        /// Verifies that the expression is false.
+        /// Asserts that the condition, evaluated by a function, is true.
         /// </summary>
-        /// <param name="condition">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is true.</exception>
-        Asserter False(bool condition, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is false.
-        /// </summary>
-        /// <param name="conditionFunc">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is true.</exception>
-        Asserter False(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is false.
-        /// </summary>
-        /// <param name="condition">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter FalseContinue(bool condition, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the expression is false.
-        /// </summary>
-        /// <param name="conditionFunc">The condition to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter FalseContinue(Func<bool> conditionFunc, string? message = null, string? loggingDetails = null);
+        Asserter True(Func<bool> conditionFunc);
 
         /// <summary>
-        /// Verifies that the object is null.
+        /// Asserts that the condition is true and continues execution.
         /// </summary>
-        /// <param name="nullableObject">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is not null.</exception>
-        Asserter Null(object? nullableObject, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is null.
-        /// </summary>
-        /// <param name="nullableObjectFunc">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is not null.</exception>
-        Asserter Null(Func<object?> nullableObjectFunc, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is null.
-        /// </summary>
-        /// <param name="nullableObject">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NullContinue(object? nullableObject, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is null.
-        /// </summary>
-        /// <param name="nullableObjectFunc">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NullContinue(Func<object?> nullableObjectFunc, string? message = null, string? loggingDetails = null);
+        Asserter TrueContinue(bool condition);
 
         /// <summary>
-        /// Verifies that the object is not null.
+        /// Asserts that the condition, evaluated by a function, is true and continues execution.
         /// </summary>
-        /// <param name="nullableObject">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is null.</exception>
-        Asserter NotNull(object? nullableObject, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is not null.
-        /// </summary>
-        /// <param name="nullableObjectFunc">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the condition is null.</exception>
-        Asserter NotNull(Func<object?> nullableObjectFunc, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is not null.
-        /// </summary>
-        /// <param name="nullableObject">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NotNullContinue(object? nullableObject, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the object is not null.
-        /// </summary>
-        /// <param name="nullableObjectFunc">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NotNullContinue(Func<object?> nullableObjectFunc, string? message = null, string? loggingDetails = null);
+        Asserter TrueContinue(Func<bool> conditionFunc);
 
         /// <summary>
-        /// Verifies that first and second objects are equal.
+        /// Asserts that the condition is false.
         /// </summary>
-        /// <param name="first">The object to be inspected.</param>
-        /// <param name="second">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the objects are not equal.</exception>
-        Asserter Equal<T>(T first, T second, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that first and second objects are equal.
-        /// </summary>
-        /// <param name="first">The object to be inspected.</param>
-        /// <param name="second">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter EqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null);
+        Asserter False(bool condition);
 
         /// <summary>
-        /// Verifies that first and second objects are not equal.
+        /// Asserts that the condition, evaluated by a function, is false.
         /// </summary>
-        /// <param name="first">The object to be inspected.</param>
-        /// <param name="second">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the objects are equal.</exception>
-        Asserter NotEqual<T>(T first, T second, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that first and second objects are not equal.
-        /// </summary>
-        /// <param name="first">The object to be inspected.</param>
-        /// <param name="second">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NotEqualContinue<T>(T first, T second, string? message = null, string? loggingDetails = null);
+        Asserter False(Func<bool> conditionFunc);
 
         /// <summary>
-        /// Verifies that the collection is empty.
+        /// Asserts that the condition is false and continues execution.
         /// </summary>
-        /// <param name="collection">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the collection is not empty.</exception>
-        Asserter Empty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the collection is empty.
-        /// </summary>
-        /// <param name="collection">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter EmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the collection is not empty.
-        /// </summary>
-        /// <param name="collection">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        /// <exception cref="AssertException">Thrown when the collection is empty.</exception>
-        Asserter NotEmpty<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
-        /// <summary>
-        /// Verifies that the collection is not empty.
-        /// </summary>
-        /// <param name="collection">The object to be inspected.</param>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <returns>The current instance of the <see cref="Asserter"/> class.</returns>
-        Asserter NotEmptyContinue<T>(IEnumerable<T> collection, string? message = null, string? loggingDetails = null);
+        Asserter FalseContinue(bool condition);
 
         /// <summary>
-        /// Throws <see cref="AssertException"/>.
+        /// Asserts that the condition, evaluated by a function, is false and continues execution.
         /// </summary>
-        /// <param name="message">Optional message to be included in case of assertion failure.</param>
-        /// <param name="loggingDetails">Optional details to be included in logging.</param>
-        /// <exception cref="AssertException">Thrown when the collection is empty.</exception>
-        void Fail(string? message = null, string? loggingDetails = null);
+        Asserter FalseContinue(Func<bool> conditionFunc);
 
         /// <summary>
-        /// Gets the list of current errors.
+        /// Asserts that the object is null.
         /// </summary>
-        /// <returns>List of errors as <see cref="List{ErrorModel}"/>.</returns>
+        Asserter Null(object? nullableObject);
+
+        /// <summary>
+        /// Asserts that the object, evaluated by a function, is null.
+        /// </summary>
+        Asserter Null(Func<object?> nullableObjectFunc);
+
+        /// <summary>
+        /// Asserts that the object is null and continues execution.
+        /// </summary>
+        Asserter NullContinue(object? nullableObject);
+
+        /// <summary>
+        /// Asserts that the object, evaluated by a function, is null and continues execution.
+        /// </summary>
+        Asserter NullContinue(Func<object?> nullableObjectFunc);
+
+        /// <summary>
+        /// Asserts that the object is not null.
+        /// </summary>
+        Asserter NotNull(object? nullableObject);
+
+        /// <summary>
+        /// Asserts that the object, evaluated by a function, is not null.
+        /// </summary>
+        Asserter NotNull(Func<object?> nullableObjectFunc);
+
+        /// <summary>
+        /// Asserts that the object is not null and continues execution.
+        /// </summary>
+        Asserter NotNullContinue(object? nullableObject);
+
+        /// <summary>
+        /// Asserts that the object, evaluated by a function, is not null and continues execution.
+        /// </summary>
+        Asserter NotNullContinue(Func<object?> nullableObjectFunc);
+
+        /// <summary>
+        /// Asserts that two objects are equal.
+        /// </summary>
+        Asserter Equal<T>(T first, T second);
+
+        /// <summary>
+        /// Asserts that two objects are equal and continues execution.
+        /// </summary>
+        Asserter EqualContinue<T>(T first, T second);
+
+        /// <summary>
+        /// Asserts that two objects are not equal.
+        /// </summary>
+        Asserter NotEqual<T>(T first, T second);
+
+        /// <summary>
+        /// Asserts that two objects are not equal and continues execution.
+        /// </summary>
+        Asserter NotEqualContinue<T>(T first, T second);
+
+        /// <summary>
+        /// Asserts that a collection is empty.
+        /// </summary>
+        Asserter Empty<T>(IEnumerable<T> collection);
+
+        /// <summary>
+        /// Asserts that a collection is empty and continues execution.
+        /// </summary>
+        Asserter EmptyContinue<T>(IEnumerable<T> collection);
+
+        /// <summary>
+        /// Asserts that a collection is not empty.
+        /// </summary>
+        Asserter NotEmpty<T>(IEnumerable<T> collection);
+
+        /// <summary>
+        /// Asserts that a collection is not empty and continues execution.
+        /// </summary>
+        Asserter NotEmptyContinue<T>(IEnumerable<T> collection);
+
+        /// <summary>
+        /// Throws an assertion failure exception.
+        /// </summary>
+        /// <exception cref="AssertException"></exception>
+
+        void Fail();
+
+        /// <summary>
+        /// Executes all assertions and throws an exception if any fail.
+        /// </summary>
+        /// <exception cref="AssertException"></exception>
+        void Assert();
+
+        /// <summary>
+        /// Specifies a message for the next assertion.
+        /// </summary>
+        Asserter Message(string message);
+
+        /// <summary>
+        /// Sets the logging message with the optional log level.
+        /// </summary>
+        Asserter Log(string message, LogLevel? logLevel = null);
+
+        /// <summary>
+        /// Sets the logging message with the log level.
+        /// </summary>
+        Asserter Log(LogLevel logLevel, string message);
+
+        /// <summary>
+        /// Retrieves a list of error models generated during assertion.
+        /// </summary>
         List<ErrorModel> GetErrorModels();
     }
 }
