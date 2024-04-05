@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     /// <summary>
     /// Represents an exception that is thrown when an assertion fails.

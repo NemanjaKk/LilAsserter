@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     /// <summary>
     /// Represents a contract for asserting conditions.

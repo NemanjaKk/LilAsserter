@@ -1,4 +1,4 @@
-﻿namespace LilAsserter.AsserterNemagus
+﻿namespace AsserterNemagus
 {
     /// <summary>
     /// Options for configuring the Asserter service.

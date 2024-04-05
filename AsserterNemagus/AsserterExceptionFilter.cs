@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     public class AsserterExceptionFilter : IExceptionFilter
     {
