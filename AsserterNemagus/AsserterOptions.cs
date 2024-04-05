@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace LilAsserter.AsserterNemagus
+﻿namespace LilAsserter.AsserterNemagus
 {
     /// <summary>
     /// Options for configuring the Asserter service.

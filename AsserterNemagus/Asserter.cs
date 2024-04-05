@@ -194,6 +194,12 @@ namespace LilAsserter.AsserterNemagus
 
         private Asserter Assert(bool condition, bool isBreaking)
         {
+            if (State.AssertionSet)
+            {
+                throw new InvalidOperationException("Can not have multiple assertions at once.");
+            }
+
+            State.AssertionSet = true;
             State.Failed = !condition;
             State.IsBreaking = isBreaking;
             return this;
@@ -250,6 +256,7 @@ namespace LilAsserter.AsserterNemagus
 
         private void ClearState()
         {
+            State.AssertionSet = false;
             State.IsBreaking = false;
             State.Failed = false;
             State.Message = DefaultErrorMessage;
