@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     public partial class Asserter
     {

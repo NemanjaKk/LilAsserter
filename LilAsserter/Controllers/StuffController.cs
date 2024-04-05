@@ -1,4 +1,4 @@
-using LilAsserter.AsserterNemagus;
+using AsserterNemagus;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LilAsserter.Controllers;

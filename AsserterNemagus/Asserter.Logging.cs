@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     public partial class Asserter
     {

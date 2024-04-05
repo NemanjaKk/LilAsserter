@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     public partial class Asserter : IAsserter
     {

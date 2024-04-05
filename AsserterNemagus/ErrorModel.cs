@@ -1,4 +1,4 @@
-﻿namespace LilAsserter.AsserterNemagus
+﻿namespace AsserterNemagus
 {
     /// <summary>
     /// Represents an error model containing information about an error.
