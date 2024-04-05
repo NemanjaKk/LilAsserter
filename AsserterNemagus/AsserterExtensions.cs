@@ -26,6 +26,11 @@ namespace LilAsserter.AsserterNemagus
             serviceCollection.Configure<AsserterOptions>(options =>
             {
                 options.EnableLogging = asserterOptions.EnableLogging;
+                options.DefaultErrorMessage = asserterOptions.DefaultErrorMessage;
+                options.SingularErrorTitle = asserterOptions.SingularErrorTitle;
+                options.SingularErrorDetail = asserterOptions.SingularErrorDetail;
+                options.MultipleErrorsTitle = asserterOptions.MultipleErrorsTitle;
+                options.MultipleErrorsDetail = asserterOptions.MultipleErrorsDetail;
             });
             serviceCollection.AddScoped<IAsserter, Asserter>();
             serviceCollection.AddScoped<AsserterExceptionFilter>();
