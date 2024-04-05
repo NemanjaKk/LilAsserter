@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace LilAsserter.AsserterNemagus
+namespace AsserterNemagus
 {
     /// <summary>
     /// Extension methods for adding Asserter services to the DI container.

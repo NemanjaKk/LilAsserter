@@ -1,4 +1,4 @@
-using LilAsserter.AsserterNemagus;
+using AsserterNemagus;
 
 var builder = WebApplication.CreateBuilder(args);
 
