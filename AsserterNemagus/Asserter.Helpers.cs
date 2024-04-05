@@ -44,7 +44,6 @@ namespace AsserterNemagus
         }
         private void ClearState()
         {
-            State.AssertionSet = false;
             State.IsBreaking = false;
             State.Failed = false;
             State.Message = DefaultErrorMessage;
