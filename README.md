@@ -52,3 +52,18 @@ public class BlogService
     }
 }
 ```	 
+
+## Logging
+You can enable or disable logging using the AsserterOptions.EnableLogging. If enabled, breaking assertions like .True() will log to Error level, while non breaking ones like .TrueContinue() to Warning level.
+Each assertions logging default can be overridden by:
+```csharp
+_asserter
+    .NotNull(searchTerm)
+    .Log(LogLevel.Critical, "Logging message")
+    .Assert();
+// OR
+_asserter
+    .NotNull(searchTerm)
+    .Log("Logging message", LogLevel.Critical)
+    .Assert();
+```	
