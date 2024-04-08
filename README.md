@@ -45,7 +45,7 @@ public class BlogService
             .NotNull(searchTerm)
             .NotEmpty(searchTerm)
             .Message("Error occurred while retrieving blog posts.")
-            .Log($"Error while searching blogs, {nameof(searchTerm)} must be not null or empty.")
+            .Log($"Error while searching blogs, {nameof(searchTerm)} must not be null or empty.")
             .Assert();
 
 	return _blogRepository.GetBlogs(searchTerm);
