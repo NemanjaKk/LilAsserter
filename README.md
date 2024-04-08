@@ -36,19 +36,19 @@ public class BlogService
     public BlogService(IAsserter asserter, IBlogRepository blogRepository)
     {
         _asserter = asserter;
-		_blogRepository = blogRepository;
+        _blogRepository = blogRepository;
     }
 
-	public List<Blog> GetBlogs(string searchTerm)
+    public List<Blog> GetBlogs(string searchTerm)
     {
-		_asserter
-			.NotNull(searchTerm)
-			.NotEmpty(searchTerm)
-			.Message("Error occurred while retrieving blog posts.")
-			.Log($"Error while searching blogs, {nameof(searchTerm)} must be not null or empty.")
-			.Assert();
+        _asserter
+            .NotNull(searchTerm)
+            .NotEmpty(searchTerm)
+            .Message("Error occurred while retrieving blog posts.")
+            .Log($"Error while searching blogs, {nameof(searchTerm)} must be not null or empty.")
+            .Assert();
 
-		return _blogRepository.GetBlogs(searchTerm);
+	return _blogRepository.GetBlogs(searchTerm);
     }
 }
 ```	 
