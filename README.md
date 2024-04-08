@@ -67,3 +67,6 @@ _asserter
     .Log("Logging message", LogLevel.Critical)
     .Assert();
 ```	
+
+## Assertion error handling
+If a breaking assertion fails, a AssertException is throw. If you are using the AsserterExceptionFilter, the response will be in the form of a BadRequestObjectResult with ProblemDetails. Otherwise you can catch the exception and use the AssertException.ProblemDetails data to handle it yourself.
