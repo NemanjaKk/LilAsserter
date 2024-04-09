@@ -11,7 +11,8 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>NemanjaKk</Authors>
 		<Description>AsserterNemagus is a library designed to facilitate assertion and validation tasks within .NET applications. It provides an intuitive API for performing assertions on various conditions, making it easier to ensure the correctness of your code.</Description>
-		<PackageTags>assert-validate-validation-exception-error-handling-log-logging-problemdetails</PackageTags>
+		<PackageTags>assert;validate;validation;exception;error-handling;log;logging;problemdetails</PackageTags>
+		<Version>1.0.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
